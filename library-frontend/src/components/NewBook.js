@@ -9,7 +9,7 @@ const NewBook = (props) => {
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
   const [ addBook ] = useMutation(ADD_BOOK, {
-    refetchQueries: [ {query: ALL_BOOKS, ALL_AUTHORS } ]
+    refetchQueries: [ { query: ALL_BOOKS }, { query: ALL_AUTHORS } ]
   })
   if (!props.show) {
     return null
@@ -18,7 +18,7 @@ const NewBook = (props) => {
   const submit = async (event) => {
     event.preventDefault()
 
-    addBook({ variables: { title, author, published, genres } })
+    addBook({ variables: { title: title.toString(), author: author.toString(), published: Number(published), genres } })
     console.log('add book...')
 
     setTitle('')
@@ -29,7 +29,7 @@ const NewBook = (props) => {
   }
 
   const addGenre = () => {
-    setGenres(genres.concat(genre))
+    setGenres(genres.concat(genre.toString()))
     setGenre('')
   }
 
@@ -40,14 +40,14 @@ const NewBook = (props) => {
           title
           <input
             value={title}
-            onChange={({ target }) => setTitle(target.value.toString())}
+            onChange={({ target }) => setTitle(target.value)}
           />
         </div>
         <div>
           author
           <input
             value={author}
-            onChange={({ target }) => setAuhtor(target.value.toString())}
+            onChange={({ target }) => setAuhtor(target.value)}
           />
         </div>
         <div>
@@ -55,13 +55,13 @@ const NewBook = (props) => {
           <input
             type='number'
             value={published}
-            onChange={({ target }) => setPublished(Number(target.value))}
+            onChange={({ target }) => setPublished(target.value)}
           />
         </div>
         <div>
           <input
             value={genre}
-            onChange={({ target }) => setGenre(target.value.toString())}
+            onChange={({ target }) => setGenre(target.value)}
           />
           <button onClick={addGenre} type="button">add genre</button>
         </div>
